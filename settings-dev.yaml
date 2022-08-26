@@ -1,0 +1,29 @@
+# db_name is a mandatory field
+DBs:
+
+  - db_name: db_name_goes_here
+    db_type: pgsql
+    db_user: username_goes_here
+    db_password: 
+      secret:
+        name: secretname_goes_here
+        key: secretkey_goes_here
+      namespace: namespace_goes_here
+    db_host: <svc_name>.<namespace>.svc
+    db_port: <svc_port>
+    backup_path: /mnt/db-backups
+    env: <env_goes_here>
+
+  # NIKSHAY
+  - db_name: db_name_goes_here
+    db_type: mssql
+    db_user: username_goes_here
+    db_password: 
+      secret:
+        name: secretname_goes_here
+        key: secretkey_goes_here
+      namespace: namespace_goes_here
+    db_host: <svc_name>.<namespace>.svc
+    db_port: <svc_port>
+    backup_path: /mnt/db-backups
+    env: <env_goes_here>
