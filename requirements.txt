@@ -1,0 +1,3 @@
+pyyaml
+kubernetes
+azure-storage-file-share
