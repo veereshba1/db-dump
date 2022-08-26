@@ -28,8 +28,6 @@ ch = logging.StreamHandler()
 ch.setLevel(logging.INFO)
 
 # create formatter
-# formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
-#formatter = logging.Formatter('%(asctime)s - %(levelname)s - %(message)s')
 formatter = logging.Formatter('[%(asctime)s] p%(process)s {%(pathname)s:%(lineno)d} %(levelname)s - %(message)s','%m-%d %H:%M:%S')
 # add formatter to ch
 ch.setFormatter(formatter)
@@ -76,22 +74,6 @@ def mssql_database(db_details):
         logger.info(e)
 
 def get_secrets(dbpassword):
-    # https://github.com/kubernetes-client/python/blob/master/kubernetes/README.md
-
-    # configuration = kubernetes.client.Configuration()
-
-    # # Configure API key authorization: BearerToken
-    # configuration.api_key_prefix['authorization'] = 'Bearer'
-    # # configuration.api_key['authorization'] = os.getenv('K8S_TOKEN')
-    # configuration.api_key['authorization'] = "/var/run/secrets/kubernetes.io/serviceaccount/token"
-
-    # configuration.host = "https://kubernetes.default"
-    # configuration.ssl_ca_cert="/var/run/secrets/kubernetes.io/serviceaccount/ca.crt"
-
-    # Enter a context with an instance of the API kubernetes.client
-    # with kubernetes.client.ApiClient(configuration) as api_client:
-        # Create an instance of the API class
-        # api_instance = kubernetes.client.CoreV1Api(api_client)
     config.load_incluster_config()
     api_instance = kubernetes.client.CoreV1Api()
     try:
@@ -104,9 +86,7 @@ def get_secrets(dbpassword):
         logger.error("Cannot fetch password from secret",e)
         raise e
 
-
 def backup_database(db_details):
-
     try:
         os.environ['PGPASSWORD'] = get_secrets(db_details["db_password"])
         logger.info(f"Starting Backup Of {db_details['db_name']} {db_details['env']}")
@@ -121,8 +101,7 @@ def backup_database(db_details):
                 '-f', os.path.join(db_details["backup_path"],db_details["db_name"]+db_details["env"] + ".dump")
                 # '-f', os.path.join(db_details["backup_path"],db_details["db_name"]+db_details["env"]+time.strftime("%Y%m%d%H%M%S") + ".dump")
             ], check=True
-        )
-        
+        )  
 
         logger.info("++++++++++++++++++++++++++++++++++++Backup Completed++++++++++++++++++++++++++++++++++++")
     except Exception as e:
