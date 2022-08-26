@@ -14,7 +14,6 @@ DBs:
     backup_path: /mnt/db-backups
     env: <env_goes_here>
 
-  # NIKSHAY
   - db_name: db_name_goes_here
     db_type: mssql
     db_user: username_goes_here
